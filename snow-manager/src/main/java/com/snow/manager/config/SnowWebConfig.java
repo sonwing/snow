@@ -74,10 +74,10 @@ public class SnowWebConfig  implements WebMvcConfigurer {
      * 自定义资源映射
      * @param registry
      */
-    @Override
+    /*@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/").addResourceLocations("classpath:/");
-    }
+    }*/
 
     /**
      * 配置视图解析器
