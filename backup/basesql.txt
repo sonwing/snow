@@ -1,0 +1,105 @@
+<sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, sys_role_id, sys_permission_id
+  </sql>
+  <select id="selectByExample" parameterType="com.snow.manager.entity.po.SysRolePermissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_role_permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role_permission
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_role_permission
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.snow.manager.entity.po.SysRolePermission">
+    insert into sys_role_permission (id, sys_role_id, sys_permission_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{sysRoleId,jdbcType=VARCHAR}, #{sysPermissionId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.snow.manager.entity.po.SysRolePermission">
+    insert into sys_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sysRoleId != null">
+        sys_role_id,
+      </if>
+      <if test="sysPermissionId != null">
+        sys_permission_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysRoleId != null">
+        #{sysRoleId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysPermissionId != null">
+        #{sysPermissionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.snow.manager.entity.po.SysRolePermission">
+    update sys_role_permission
+    <set>
+      <if test="sysRoleId != null">
+        sys_role_id = #{sysRoleId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysPermissionId != null">
+        sys_permission_id = #{sysPermissionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.snow.manager.entity.po.SysRolePermission">
+    update sys_role_permission
+    set sys_role_id = #{sysRoleId,jdbcType=VARCHAR},
+      sys_permission_id = #{sysPermissionId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
